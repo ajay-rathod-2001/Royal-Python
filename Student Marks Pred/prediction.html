@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Marks Prediction AI</title>
+    <style>
+        /* THEME: Black Background, Green/Brown Accents, Grey Text */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            color: #CCCCCC;
+            /* Grey text */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            /* Hide scrollbars for the star effect */
+            display: flex;
+            justify_content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* --- Twinkling Stars Animation --- */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle var(--duration) infinite ease-in-out;
+        }
+
+        /* Keyframes for the twinkling effect */
+        @keyframes twinkle {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+                box-shadow: 0 0 10px white;
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+        }
+
+        /* --- Main UI Container --- */
+        .container {
+            position: relative;
+            z-index: 10;
+            /* Keeps content above stars */
+            background: rgba(26, 26, 26, 0.95);
+            /* Dark Grey transparent */
+            padding: 40px;
+            border: 3px solid #A52A2A;
+            /* Brown border */
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.2);
+            /* Soft Green glow */
+            text-align: center;
+            width: 350px;
+            backdrop-filter: blur(5px);
+        }
+
+        h1 {
+            color: #00FF00;
+            /* Green Title */
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #003300;
+            font-size: 28px;
+        }
+
+        p {
+            color: #888888;
+            /* Darker Grey description */
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #A52A2A;
+            /* Brown label */
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            background: #111;
+            /* Very dark grey input bg */
+            border: 1px solid #555;
+            color: #00FF00;
+            /* Green text input */
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #00FF00;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+
+        button {
+            background-color: #A52A2A;
+            /* Brown button */
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background-color: #00FF00;
+            /* Green on hover */
+            color: black;
+            box-shadow: 0 0 20px #00FF00;
+            transform: translateY(-2px);
+        }
+
+        #result {
+            margin-top: 30px;
+            font-size: 22px;
+            font-weight: bold;
+            min-height: 40px;
+            display: flex;
+            justify_content: center;
+            align-items: center;
+            color: white;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 11px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="stars-container"></div>
+
+    <div class="container">
+        <h1>Marks Predictor AI</h1>
+        <p>Enter study hours to predict score</p>
+
+        <div class="input-group">
+            <label for="hours">Hours Studied</label>
+            <input type="number" id="hours" placeholder="e.g. 5.5" step="0.1">
+        </div>
+
+        <button onclick="predictScore()">Predict Score</button>
+
+        <div id="result">Waiting for input...</div>
+
+        <div class="footer">
+            Powered by Linear Regression Model<br>
+            (Data Source: Hours and Scores.csv)
+        </div>
+    </div>
+
+    <script>
+        // --- 1. Dynamic Star Generation Logic ---
+        const starsContainer = document.getElementById('stars-container');
+        const starCount = 150; // Number of stars
+
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+
+            // Random position across the screen
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+
+            // Random size (tiny to small)
+            const size = Math.random() * 3;
+
+            // Random animation duration (twinkle speed)
+            const duration = Math.random() * 3 + 1; // 1s to 4s
+
+            // Random animation delay so they don't twinkle together
+            const delay = Math.random() * 5;
+
+            // Apply styles
+            star.style.left = `${x}px`;
+            star.style.top = `${y}px`;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.style.setProperty('--duration', `${duration}s`);
+            star.style.animationDelay = `${delay}s`;
+
+            // Append to body
+            starsContainer.appendChild(star);
+        }
+
+        // --- 2. Prediction Logic (Connected to Excel Data) ---
+        // These constants come from the Python Linear Regression analysis of your CSV file
+        const SLOPE = 9.77580339;
+        const INTERCEPT = 2.48367341;
+
+        function predictScore() {
+            const hoursInput = document.getElementById('hours').value;
+            const hours = parseFloat(hoursInput);
+            const resultDiv = document.getElementById('result');
+
+            // Validation
+            if (isNaN(hours) || hours < 0) {
+                resultDiv.style.color = '#A52A2A'; // Brown for error
+                resultDiv.innerText = "Please enter a valid number.";
+                return;
+            }
+
+            // Calculation
+            let predictedScore = (SLOPE * hours) + INTERCEPT;
+
+            // Logical cap at 100% and 0%
+            if (predictedScore > 100) predictedScore = 100;
+            if (predictedScore < 0) predictedScore = 0;
+
+            // Display Result
+            resultDiv.style.color = '#00FF00'; // Green for success
+            resultDiv.innerText = `Predicted Score: ${predictedScore.toFixed(2)}%`;
+
+            // Simple animation on result
+            resultDiv.style.transform = "scale(1.1)";
+            setTimeout(() => { resultDiv.style.transform = "scale(1)"; }, 200);
+        }
+    </script>
+</body>
+
+</html>
