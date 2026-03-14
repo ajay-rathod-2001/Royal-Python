@@ -6,13 +6,15 @@ from itertools import repeat
 from Modules.aadhar_number import Aadhar_Number
 from Modules.names import get_names
 from Modules.vaccination import vaccination_dates
+from Modules.first_vaccination import first_vaccine
+from Modules.states import get_state
 
 book = xlsxwriter.Workbook("Vaccination_data.xlsx")
 sheet = book.add_worksheet()
 print("Writting into the file. Please Wait....")
 
 row = 0; column = 0
-dataset =100000
+dataset =1000
 
 content = ["Aadhar_Number", 
            "Name", 
@@ -55,7 +57,39 @@ row, column =1, 1 # Names
 write_columns(row, column, content[1], get_names)
 print("\nWritting Data in other columns too...\n")
 
+day1 = []; day2=[]; day_diff=[]
+for i in range(1,dataset):
+    v1,dg,v2= vaccination_dates()
+    day1.append(v1)
+    day2.append(v2)
+    day_diff.append(dg)
+    
+def write_consecutive_columns(row:int,column:int, content_name:str, values:list)->None:
+    print(f"Now writting for the column number{column}for the heading '{content_name}'.")
+    for v in values:
+        sheet.write(row,column,v)
+        row +=1
+    print(f"The Data for the column number{column} for the heading '{content_name}'written successfully!")
+         
 row, column =1, 2 # Vaccination Date (1st Dose)
+write_consecutive_columns(row, column, content[2], day1)
+
+row, column =1, 3 # Day Gap
+write_consecutive_columns(row, column, content[3], day_diff)
+
+row, column =1, 4 # Vaccination Date (2nd Dose)
+write_consecutive_columns(row, column, content[4], day2)
+
+row, column=1,5 # Day Gap in months
+write_consecutive_columns(row, column, content[5], list(repeat(6,dataset-1)))
+
+row, column =1, 7 # Partially Vaccinated
+write_columns(row, column, content[7], first_vaccine)
+
+row, column =1, 11 # State/U.T
+write_columns(row, column, content[11], get_state)
+
+
 
 
 book.close()

@@ -2,15 +2,9 @@
 import random
 
 def Aadhar_Number():
-    try:
-        st =" ";j=0
-        while j<12:
-            a =random.randint(0,9)
-            st +=str(a)
-            j=j+1
-        return st
-    except Exception as e:
-        print(e)  
-        
-print(Aadhar_Number())  
+    """Generates a random 12-digit Aadhar-like number as a string."""
+    return "".join([str(random.randint(0, 9)) for _ in range(12)])
+
+if __name__ == '__main__':
+    print(Aadhar_Number())
         
