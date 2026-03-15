@@ -58,7 +58,7 @@ write_columns(row, column, content[1], get_names)
 print("\nWritting Data in other columns too...\n")
 
 day1 = []; day2=[]; day_diff=[]
-for i in range(1,dataset):
+for i in range(0,dataset):
     v1,dg,v2= vaccination_dates()
     day1.append(v1)
     day2.append(v2)
@@ -81,7 +81,7 @@ row, column =1, 4 # Vaccination Date (2nd Dose)
 write_consecutive_columns(row, column, content[4], day2)
 
 row, column=1,5 # Day Gap in months
-write_consecutive_columns(row, column, content[5], list(repeat(6,dataset-1)))
+write_consecutive_columns(row, column, content[5], list(repeat(6,dataset)))
 
 row, column =1, 7 # Partially Vaccinated
 write_columns(row, column, content[7], first_vaccine)
