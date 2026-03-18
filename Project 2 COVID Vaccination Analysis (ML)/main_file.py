@@ -16,19 +16,19 @@ print("Writting into the file. Please Wait....")
 row = 0; column = 0
 dataset =1000
 
-content = ["Aadhar_Number", 
-           "Name", 
-           "Vaccination_Date(1st Dose)", 
-           "Day_Gap",
-           "Vaccination_Date(2nd Dose)",
-           "Day_Gap(in months)",
-           "Vaccination_Date(Booster Dose)",
-           "Partially_Vaccinated",
-           "Fully_Vaccinated",
-           "Booster_Vaccinated",
-           "Vaccine_Name",
-           "State/U.T",
-           "Vaccination Certified"
+content = ["Aadhar_Number", #0 1
+           "Name", # 1 2
+           "Vaccination_Date(1st Dose)", #2 3
+           "Day_Gap", #3 4
+           "Vaccination_Date(2nd Dose)", # 4 5
+           "Day_Gap(in months)", # 5 6
+           "Vaccination_Date(Booster Dose)", # 6 7
+           "Partially_Vaccinated", # 7 8
+           "Fully_Vaccinated", # 8 9
+           "Booster_Vaccinated", # 9 10
+           "Vaccine_Name", # 10 11
+           "State/U.T", # 11 12
+           "Vaccination Certified" # 12 13
            ]
 
 # Iterating through the content list
